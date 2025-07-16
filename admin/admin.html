@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Truck Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="admin-dashboard">
+    <div class="admin-panel">
+      <img src="logo.jpg" alt="Food Truck Logo" class="logo-img">
+      <h1>Food Truck Admin Panel</h1>
+      <form class="admin-form" id="adminForm">
+        <label for="type">Food Truck Name/Type</label>
+        <input type="text" id="type" name="type" placeholder="Food Truck Type" required>
+
+    
+
+        <label for="latitude">Latitude</label>
+        <input type="number" id="latitude" name="latitude" placeholder="Latitude" step="any" required>
+
+        <label for="longitude">Longitude</label>
+        <input type="number" id="longitude" name="longitude" placeholder="Longitude" step="any" required>
+
+        <label for="reporter">Reported By</label>
+        <input type="text" id="reporter" name="reporter" placeholder="Reported By" required>
+
+        <label for="timestamp">Timestamp</label>
+        <input type="datetime-local" id="timestamp" name="timestamp" required>
+
+        <button type="submit" class="add-btn"><span style="font-size:1.1em;">➕</span> Add</button>
+      </form>
+      <div id="messageBar" class="message-bar"></div>
+    </div>
+    <div class="admin-table-section">
+      <div class="filter-bar">
+        <input type="text" id="filterType" placeholder="Filter by Type">
+        <input type="text" id="filterReporter" placeholder="Filter by Reporter">
+      </div>
+      <h2 class="table-title">List of Submitted Trucks</h2>
+      <div class="table-wrapper">
+        <table id="trucksTable">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Latitude & Longitude</th>
+              <th>Reporter</th>
+              <th>Timestamp</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="trucksTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal-overlay" style="display:none;">
+      <div class="modal-content">
+        <h2>Edit Food Truck</h2>
+        <form id="editForm">
+          <label for="editType">Food Truck Name/Type</label>
+          <input type="text" id="editType" name="editType" required>
+
+         
+
+          <label for="editLatitude">Latitude</label>
+          <input type="number" id="editLatitude" name="editLatitude" step="any" required>
+
+          <label for="editLongitude">Longitude</label>
+          <input type="number" id="editLongitude" name="editLongitude" step="any" required>
+
+          <label for="editReporter">Reported By</label>
+          <input type="text" id="editReporter" name="editReporter" required>
+
+          <label for="editTimestamp">Timestamp</label>
+          <input type="datetime-local" id="editTimestamp" name="editTimestamp" required>
+
+          <div class="modal-actions">
+            <button type="button" id="cancelEditBtn" class="cancel-btn">Cancel</button>
+            <button type="submit" class="blue-btn">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="spinner-overlay" style="display:none;">
+      <div class="spinner"></div>
+    </div>
+  </div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+    import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBHW4m110Kg_-j3wtQdBmdSVPh_Qq5EFkI",
+      authDomain: "food-truck-tracker-b8f75.firebaseapp.com",
+      databaseURL: "https://food-truck-tracker-b8f75-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "food-truck-tracker-b8f75",
+      storageBucket: "food-truck-tracker-b8f75.appspot.com",
+      messagingSenderId: "492189366045",
+      appId: "1:492189366045:web:63e0f64f2ce3a7a9dd93f4",
+      measurementId: "G-KL34RJC3WG"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getDatabase(app);
+
+    // Fetch and display trucks
+    function displayTrucks() {
+      const db = getDatabase();
+      const trucksRef = ref(db, "foodtrucks");
+      const tbody = document.getElementById("trucksTableBody");
+      onValue(trucksRef, (snapshot) => {
+        tbody.innerHTML = "";
+        const filterType = document.getElementById('filterType').value.toLowerCase();
+        const filterReporter = document.getElementById('filterReporter').value.toLowerCase();
+        snapshot.forEach(child => {
+          const truck = child.val();
+          const key = child.key;
+          // Filtering
+          if ((filterType && !(truck.type || '').toLowerCase().includes(filterType)) ||
+              (filterReporter && !(truck.reporter || '').toLowerCase().includes(filterReporter))) {
+            return;
+          }
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td class="type">${truck.type || ""}</td>
+            <td class="latlng">${truck.latitude || ""}, ${truck.longitude || ""}</td>
+            <td class="reporter">${truck.reporter || ""}</td>
+            <td class="timestamp" data-raw="${truck.timestamp || ''}">${formatDate(truck.timestamp) || ""}</td>
+            <td><div class="action-buttons">
+              <button class="edit-btn blue-btn" data-key="${key}"><span style='font-size:1.1em;'>🖉</span> Edit</button>
+              <button class="delete-btn red-btn" data-key="${key}"><span style='font-size:1.1em;'>🗑️</span> Delete</button>
+            </div></td>
+          `;
+          tbody.appendChild(row);
+        });
+        addEditListeners();
+        addDeleteListeners();
+      });
+    }
+    displayTrucks();
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      if (isNaN(d)) return dateStr;
+      const options = { day: '2-digit', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true };
+      return d.toLocaleString('en-GB', options).replace(',', '');
+    }
+
+    function openEditModal(truck, key) {
+      document.getElementById('editType').value = truck.type || '';
+      document.getElementById('editLatitude').value = truck.latitude || '';
+      document.getElementById('editLongitude').value = truck.longitude || '';
+      document.getElementById('editReporter').value = truck.reporter || '';
+      document.getElementById('editTimestamp').value = truck.timestamp || '';
+      document.getElementById('editModal').style.display = 'flex';
+      document.getElementById('editForm').setAttribute('data-key', key);
+    }
+    document.getElementById('cancelEditBtn').onclick = function() {
+      document.getElementById('editModal').style.display = 'none';
+    };
+    document.getElementById('editForm').onsubmit = function(e) {
+      e.preventDefault();
+      const key = e.target.getAttribute('data-key');
+      const updated = {
+        type: document.getElementById('editType').value,
+        latitude: parseFloat(document.getElementById('editLatitude').value),
+        longitude: parseFloat(document.getElementById('editLongitude').value),
+        reporter: document.getElementById('editReporter').value,
+        timestamp: document.getElementById('editTimestamp').value
+      };
+      showSpinner(true);
+      import('https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js').then(({ getDatabase, ref, update }) => {
+        const db = getDatabase();
+        update(ref(db, `foodtrucks/${key}`), updated).then(() => {
+          showMessage('Food truck updated!', 'success');
+          document.getElementById('editModal').style.display = 'none';
+          displayTrucks();
+        }).catch(() => showMessage('Error updating food truck', 'error'));
+      }).finally(() => showSpinner(false));
+    };
+
+    function addEditListeners() {
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.onclick = function() {
+          const key = btn.getAttribute('data-key');
+          // Find the truck data from the table row
+          const row = btn.closest('tr');
+          const truck = {
+            type: row.querySelector('.type').textContent,
+            latitude: row.querySelector('.latlng').textContent.split(',')[0].trim(),
+            longitude: row.querySelector('.latlng').textContent.split(',')[1].trim(),
+            reporter: row.querySelector('.reporter').textContent,
+            timestamp: row.querySelector('.timestamp').getAttribute('data-raw') || ''
+          };
+          openEditModal(truck, key);
+        };
+      });
+    }
+
+    function addDeleteListeners() {
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.onclick = function() {
+          const key = btn.getAttribute('data-key');
+          if (confirm('Are you sure you want to delete this food truck?')) {
+            showSpinner(true);
+            import('https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js').then(({ getDatabase, ref, remove }) => {
+              const db = getDatabase();
+              remove(ref(db, `foodtrucks/${key}`)).then(() => { showMessage('Food truck deleted!', 'success'); displayTrucks(); })
+                .catch(() => showMessage('Error deleting food truck', 'error'));
+            }).finally(() => showSpinner(false));
+          }
+        };
+      });
+    }
+
+    // Handle submit
+    document.getElementById("adminForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const type = document.getElementById("type").value;
+      const lat = parseFloat(document.getElementById("latitude").value);
+      const lng = parseFloat(document.getElementById("longitude").value);
+      const reporter = document.getElementById("reporter").value;
+      const timestamp = document.getElementById("timestamp").value;
+
+      if (!type || isNaN(lat) || isNaN(lng) || !reporter || !timestamp) {
+        alert("Please fill in all fields correctly.");
+        return;
+      }
+      showSpinner(true);
+      try {
+        const truckRef = push(ref(db, "foodtrucks"));
+        await set(truckRef, {
+          type,
+          latitude: lat,
+          longitude: lng,
+          reporter,
+          timestamp
+        });
+        alert("✅ Food truck reported!");
+        document.getElementById("adminForm").reset();
+        displayTrucks();
+        showMessage('Food truck added!', 'success');
+      } catch (error) {
+        alert("❌ Error: " + error.message);
+        showMessage('Error adding food truck', 'error');
+      } finally {
+        showSpinner(false);
+      }
+    });
+
+    document.getElementById('filterType').addEventListener('input', displayTrucks);
+    document.getElementById('filterReporter').addEventListener('input', displayTrucks);
+
+    // Modal: click outside to close
+    document.getElementById('editModal').addEventListener('mousedown', function(e) {
+      if (e.target === this) {
+        this.style.display = 'none';
+      }
+    });
+
+    function showSpinner(show) {
+      document.getElementById('loadingSpinner').style.display = show ? 'flex' : 'none';
+    }
+
+    // Toast-style message bar
+    function showMessage(msg, type = 'success') {
+      const bar = document.getElementById('messageBar');
+      bar.textContent = msg;
+      bar.className = 'message-bar ' + type;
+      bar.style.display = 'block';
+      bar.style.opacity = 1;
+      bar.style.transform = 'translateY(0)';
+      setTimeout(() => {
+        bar.style.opacity = 0;
+        bar.style.transform = 'translateY(-30px)';
+      }, 2200);
+      setTimeout(() => { bar.style.display = 'none'; }, 2600);
+    }
+  </script>
+</body>
+</html>

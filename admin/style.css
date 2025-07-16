@@ -1,0 +1,427 @@
+body {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #43cea2 100%);
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.admin-dashboard {
+    display: flex;
+    flex-direction: row;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    margin: 48px auto 24px auto;
+}
+.admin-panel {
+    background: #fffdfa;
+    padding: 2.5rem 2rem;
+    border-radius: 24px;
+    box-shadow: 0 8px 40px rgba(255, 140, 0, 0.10), 0 1.5px 8px rgba(67, 206, 162, 0.08);
+    width: 370px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.3s;
+}
+.admin-panel:hover {
+    box-shadow: 0 12px 48px rgba(0,0,0,0.18);
+}
+.admin-table-section {
+    flex: 1 1 0;
+    min-width: 340px;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background: #fffdfa;
+    border-radius: 24px;
+    box-shadow: 0 8px 40px rgba(255, 140, 0, 0.10), 0 1.5px 8px rgba(67, 206, 162, 0.08);
+    padding: 2.5rem 2rem;
+}
+.table-title {
+    color: #ff8800;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 1.2rem 0;
+    text-align: left;
+}
+
+.admin-container h1 {
+    color: #ff8800;
+    margin-bottom: 1.7rem;
+    font-size: 2.3rem;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.admin-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+    width: 100%;
+    margin-bottom: 1.7rem;
+}
+
+.admin-form label {
+    text-align: left;
+    color: #444;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-bottom: 0.2rem;
+}
+
+.admin-form input {
+    padding: 0.8rem;
+    border: 1.5px solid #ffd580;
+    border-radius: 10px;
+    font-size: 1.05rem;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+    background: #fffdfa;
+}
+
+.admin-form input:focus {
+    border: 1.5px solid #ff8800;
+    box-shadow: 0 0 0 2px #ffe5b4;
+}
+
+.add-btn {
+    background: linear-gradient(90deg, #43cea2 0%, #ff8800 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.9rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    box-shadow: 0 2px 8px rgba(46,204,64,0.08);
+}
+.add-btn:hover {
+    background: linear-gradient(90deg, #43cea2 0%, #ffb347 100%);
+    box-shadow: 0 0 0 3px #ffe5b4;
+    transform: translateY(-2px) scale(1.03);
+}
+
+.filter-bar {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0 0.5rem 0;
+    width: 100%;
+    justify-content: center;
+}
+.filter-bar input {
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    border: 1.5px solid #ffd580;
+    font-size: 1.05rem;
+    width: 45%;
+    background: #fffdfa;
+    transition: border 0.2s;
+}
+.filter-bar input:focus {
+    border: 1.5px solid #ff8800;
+}
+
+.message-bar {
+    display: none;
+    position: fixed;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-30px);
+    opacity: 0;
+    min-width: 220px;
+    max-width: 90vw;
+    z-index: 3000;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    transition: opacity 0.4s, transform 0.4s;
+}
+.message-bar.success {
+    background: linear-gradient(90deg, #43cea2 0%, #d4edda 100%);
+    color: #155724;
+    border: 1.5px solid #43cea2;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    box-shadow: 0 4px 24px rgba(67, 206, 162, 0.13);
+}
+.message-bar.error {
+    background: linear-gradient(90deg, #e74c3c 0%, #f8d7da 100%);
+    color: #721c24;
+    border: 1.5px solid #e74c3c;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    box-shadow: 0 4px 24px rgba(231,76,60,0.13);
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+#trucksTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1rem;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    font-size: 1.04rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+#trucksTable th, #trucksTable td {
+    padding: 0.85rem 0.5rem;
+    border-bottom: 1.5px solid #ffd580;
+    text-align: center;
+}
+#trucksTable th {
+    background: linear-gradient(90deg, #ffb347 0%, #ff8800 100%);
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.08rem;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+#trucksTable tr:last-child td {
+    border-bottom: none;
+}
+#trucksTable tr:nth-child(even) {
+    background: #fffbe7;
+}
+#trucksTable tr:nth-child(odd) {
+    background: #f7fafd;
+}
+#trucksTable tr:hover {
+    background: #ffe5b4;
+    transition: background 0.2s;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.blue-btn {
+    background: linear-gradient(90deg, #3498db 0%, #43cea2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    margin-right: 0.3rem;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    box-shadow: 0 1px 4px rgba(52,152,219,0.08);
+}
+.blue-btn:hover {
+    background: linear-gradient(90deg, #217dbb 0%, #43cea2 100%);
+    box-shadow: 0 0 0 2px #b2f7ef;
+    transform: translateY(-1px) scale(1.04);
+}
+
+.red-btn {
+    background: linear-gradient(90deg, #e74c3c 0%, #ffb347 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    box-shadow: 0 1px 4px rgba(231,76,60,0.08);
+}
+.red-btn:hover {
+    background: linear-gradient(90deg, #c0392b 0%, #ffb347 100%);
+    box-shadow: 0 0 0 2px #ffd6cc;
+    transform: translateY(-1px) scale(1.04);
+}
+
+.cancel-btn {
+    background: #aaa;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 1em;
+    cursor: pointer;
+    margin-left: 0.3rem;
+    transition: background 0.2s, transform 0.15s;
+}
+.cancel-btn:hover {
+    background: #888;
+    transform: translateY(-1px) scale(1.04);
+}
+
+.logo-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 1rem auto;
+    vertical-align: middle;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    background: #fffbe7;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 12px 48px rgba(255, 140, 0, 0.18), 0 2px 12px rgba(67, 206, 162, 0.10);
+    padding: 2rem 2.2rem 1.5rem 2.2rem;
+    min-width: 320px;
+    max-width: 95vw;
+    width: 370px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    animation: modalIn 0.25s cubic-bezier(.4,1.6,.6,1) 1;
+}
+@keyframes modalIn {
+    from { opacity: 0; transform: translateY(-30px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+}
+.modal-content h2 {
+    color: #ff8800;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    text-align: center;
+}
+#editForm label {
+    text-align: left;
+    color: #444;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-bottom: 0.2rem;
+}
+#editForm input {
+    padding: 0.7rem;
+    border: 1.5px solid #ffd580;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    outline: none;
+    margin-bottom: 0.8rem;
+    background: #fffdfa;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+#editForm input:focus {
+    border: 1.5px solid #ff8800;
+    box-shadow: 0 0 0 2px #ffe5b4;
+}
+.modal-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 0.7rem;
+    margin-top: 0.5rem;
+}
+@media (max-width: 600px) {
+    .modal-content {
+        width: 98vw;
+        min-width: unset;
+        padding: 1.2rem 0.5rem 1rem 0.5rem;
+    }
+}
+
+@media (max-width: 1100px) {
+    .admin-dashboard {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+    .admin-panel, .admin-table-section {
+        width: 98vw;
+        max-width: 98vw;
+        min-width: unset;
+        margin: 0 auto;
+    }
+    .admin-table-section {
+        margin-top: 0;
+    }
+}
+@media (max-width: 700px) {
+    .admin-container {
+        width: 98vw;
+        padding: 1rem 0.2rem;
+    }
+    .admin-form, .filter-bar {
+        width: 100%;
+    }
+    #trucksTable th, #trucksTable td {
+        font-size: 0.97rem;
+        padding: 0.6rem 0.2rem;
+    }
+    .admin-container h1 {
+        font-size: 1.5rem;
+    }
+}
+@media (max-width: 500px) {
+    .admin-container {
+        padding: 0.5rem 0.1rem;
+    }
+    .admin-form, .filter-bar {
+        width: 100%;
+    }
+    .filter-bar {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+.spinner-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255,255,255,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+.spinner {
+    border: 5px solid #ffe5b4;
+    border-top: 5px solid #ff8800;
+    border-radius: 50%;
+    width: 54px;
+    height: 54px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
