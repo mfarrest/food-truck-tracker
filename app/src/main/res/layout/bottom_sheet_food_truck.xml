@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="wrap_content"
+    android:background="#E3F2FD">
+
+    <TextView
+        android:id="@+id/tvType"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Food Truck Type" />
+
+    <TextView
+        android:id="@+id/tvReporter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reported by: " />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Time: " />
+
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Location: " />
+
+</LinearLayout> 

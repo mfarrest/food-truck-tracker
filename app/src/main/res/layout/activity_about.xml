@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="#E3F2FD">
+
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:title="About"
+        android:titleTextColor="@android:color/white"
+        app:navigationIcon="@drawable/baseline_arrow_back_24" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- App Logo -->
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/logo"
+                android:contentDescription="App Icon"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/circle_bg"
+                android:padding="8dp" />
+
+            <!-- App Name -->
+           <!-- <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Food Truck Location Tracker"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="@color/purple_700"
+                android:layout_marginBottom="8dp"  -->
+
+            <!-- Version -->
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Version 1.0"
+                android:textAlignment="center"
+                android:textColor="#888888"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Description -->
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This app helps users locate and report food trucks in their area using real-time data and maps. Developed as part of the ICT602 Mobile Technology project at UiTM."
+                android:textSize="16sp"
+                android:layout_marginBottom="24dp"
+                android:lineSpacingExtra="4dp" />
+
+            <!-- Team Header -->
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Team Members:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Team Members as Cards -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/irfan"
+                        android:contentDescription="Irfan"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/circle_bg" />
+                <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Muhammad Irfan Danial Bin Mohd Khir\n(2023389227)"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/faris"
+                        android:contentDescription="Faris"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/circle_bg" />
+                <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Muhammad Faris Bin Mohd Fairul\n(2023114523)"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/adzri"
+                        android:contentDescription="Adzri"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/circle_bg" />
+                <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Muhammad Adzri Bin Mohd Solehim\n(2023390083)"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/yahya"
+                        android:contentDescription="Yahya"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/circle_bg" />
+                <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Yahya Naim Bin Md Rofiee\n(2023115911)"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Contact Section -->
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contact:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email: irfandanial@student.uitm.edu.my\nGitHub:https://github.com/mfarrest/food-truck-tracker.git"
+                android:textSize="16sp"
+                android:autoLink="email|web"
+                android:lineSpacingExtra="2dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
